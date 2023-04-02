@@ -1,5 +1,5 @@
 {
-  "name": "blockchain-messaging-app",
+  "name": "BlockChain Messaging App",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,14 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "ethers": "^6.2.3",
-    "next": "13.2.4",
+    "ethers": "^5.7.2",
+    "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "web3modal": "^1.9.12"
+    "web3modal": "^1.9.9"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-    "hardhat": "^2.13.0"
+    "hardhat": "^2.12.0"
   }
 }

@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 pragma experimental ABIEncoderV2;
 
 contract ChatApp {
-    // USER STRUCT
+    //USER STRUCT
     struct user {
         string name;
         friend[] friendList;
@@ -30,14 +30,14 @@ contract ChatApp {
     mapping(address => user) userList;
     mapping(bytes32 => message[]) allMessages;
 
-    // CHECK USER EXIST
-    function checkUserExist(address pubkey) public view returns (bool) {
+    //CHECK USER EXIST
+    function checkUserExists(address pubkey) public view returns (bool) {
         return bytes(userList[pubkey].name).length > 0;
     }
 
-    // CREATE ACCOUNT
+    //CREATE ACCOUNT
     function createAccount(string calldata name) external {
-        require(checkUserExist(msg.sender) == false, "user Already exist");
+        require(checkUserExists(msg.sender) == false, "User already exists");
         require(bytes(name).length > 0, "Username cannot be empty");
 
         userList[msg.sender].name = name;
@@ -45,19 +45,19 @@ contract ChatApp {
         getAllUsers.push(AllUserStruck(name, msg.sender));
     }
 
-    // GET USERNAME
-    function getUesrname(address pubkey) external view returns (string memory) {
-        require(checkUserExist(pubkey), "User is not registered");
+    //GET USERNAME
+    function getUsername(address pubkey) external view returns (string memory) {
+        require(checkUserExists(pubkey), "User is not registered");
         return userList[pubkey].name;
     }
 
-    // ADD FRIENDS
+    //ADD FRIENDS
     function addFriend(address friend_key, string calldata name) external {
-        require(checkUserExist(msg.sender), "Create an account first");
-        require(checkUserExist(friend_key), "User is not registered");
+        require(checkUserExists(msg.sender), "Create an account first");
+        require(checkUserExists(friend_key), "User is not registered!");
         require(
             msg.sender != friend_key,
-            "User cannot add themselves as friends"
+            "Users cannot add themeselves as friends"
         );
         require(
             checkAlreadyFriends(msg.sender, friend_key) == false,
@@ -68,7 +68,7 @@ contract ChatApp {
         _addFriend(friend_key, msg.sender, userList[msg.sender].name);
     }
 
-    // checkAlreadyFriends
+    //checkAlreadyFriends
     function checkAlreadyFriends(
         address pubkey1,
         address pubkey2
@@ -97,12 +97,12 @@ contract ChatApp {
         userList[me].friendList.push(newFriend);
     }
 
-    // GET MY FRIEND
+    //GETMY FRIEND
     function getMyFriendList() external view returns (friend[] memory) {
         return userList[msg.sender].friendList;
     }
 
-    // get chat code
+    //get chat code
     function _getChatCode(
         address pubkey1,
         address pubkey2
@@ -112,10 +112,10 @@ contract ChatApp {
         } else return keccak256(abi.encodePacked(pubkey2, pubkey1));
     }
 
-    // SEND MESSAGE
+    //SEND MESSAGE
     function sendMessage(address friend_key, string calldata _msg) external {
-        require(checkUserExist(msg.sender), "Create an account first");
-        require(checkUserExist(friend_key), "User is not registered");
+        require(checkUserExists(msg.sender), "Create an account first");
+        require(checkUserExists(friend_key), "User is not registered");
         require(
             checkAlreadyFriends(msg.sender, friend_key),
             "You are not friend with the given user"
@@ -126,7 +126,7 @@ contract ChatApp {
         allMessages[chatCode].push(newMsg);
     }
 
-    // READ MESSAGE
+    //READ MESSAGE
     function readMessage(
         address friend_key
     ) external view returns (message[] memory) {
